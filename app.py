@@ -20,7 +20,7 @@ from langchain.chains import create_retrieval_chain
 os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-HF_MODEL = "Qwen/Qwen3-Embedding-0.6B"
+HF_MODEL = "all-MiniLM-L6-v2"
 GROQ_MODEL = "llama-3.1-8b-instant"
 Authorization_Token = os.getenv("AUTHORIZATION_TOKEN")
 
@@ -85,3 +85,4 @@ async def run_query(req: QueryRequest, Authorization: str = Header(...)):
     answers = [answer_query(q, retriever) for q in req.questions]
 
     return {"answers": answers}
+
