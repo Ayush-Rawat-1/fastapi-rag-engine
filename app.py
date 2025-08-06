@@ -20,9 +20,8 @@ from langchain.chains import create_retrieval_chain
 os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-HF_MODEL = "all-MiniLM-L6-v2"
+HF_MODEL = "all-MiniLM-L12-v2"
 GROQ_MODEL = "llama-3.1-8b-instant"
-Authorization_Token = os.getenv("AUTHORIZATION_TOKEN")
 
 # ------------------ FastAPI ------------------
 app = FastAPI()
@@ -74,15 +73,13 @@ def answer_query(question: str, retriever):
     return retriever_chain.invoke({ "input": question})['answer']
 
 # ------------------ Endpoint ------------------
-@app.post("/api/v1", response_model=QueryResponse)
-async def run_query(req: QueryRequest, Authorization: str = Header(...)):
-    if Authorization != f'Bearer {Authorization_Token}':
-        raise HTTPException(status_code=401, detail="Unauthorized")
+@app.post("/api/v1/hackrx/run", response_model=QueryResponse)
+async def run_query(req: QueryRequest):
 
     file_path = download_file(req.documents)
     docs = load_docs(file_path)
     retriever = embed_docs(docs)
     answers = [answer_query(q, retriever) for q in req.questions]
+    os.remove(file_path)  # Clean up the temporary file
 
     return {"answers": answers}
-
