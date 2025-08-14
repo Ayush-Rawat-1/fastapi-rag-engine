@@ -24,7 +24,7 @@ os.environ["HF_TOKEN"] = os.getenv("HF_TOKEN")
 os.environ["GROQ_API_KEY"] = os.getenv("GROQ_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 HF_MODEL = "all-MiniLM-L12-v2"
-GROQ_MODEL = "openai/gpt-oss-120b"
+GROQ_MODEL = "meta-llama/llama-4-scout-17b-16e-instruct"
 
 # ------------------ FastAPI ------------------
 app = FastAPI()
